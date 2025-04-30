@@ -2,14 +2,28 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Play Audio</title>
+  <title>Autoplay Loop Audio</title>
 </head>
-<body style="text-align: center; padding-top: 100px; background-color: #f0f0f0;">
-  <h2>Click the button to start looped playback</h2>
-  <button onclick="document.getElementById('loopAudio').play()">Play Music</button>
-  <audio id="loopAudio" loop>
+<body>
+  <audio id="audio" autoplay muted loop>
     <source src="sound.mp3" type="audio/mpeg">
     Your browser does not support the audio element.
   </audio>
+
+  <script>
+    const audio = document.getElementById('audio');
+    audio.volume = 0;
+    let vol = 0;
+
+    // Unmute after 500ms (most browsers allow this)
+    setTimeout(() => {
+      audio.muted = false;
+      const fadeIn = setInterval(() => {
+        vol += 0.01;
+        audio.volume = Math.min(vol, 1);
+        if (vol >= 1) clearInterval(fadeIn);
+      }, 100); // 0.01ずつ100msごとに音量アップ（10秒かけて最大に）
+    }, 500);
+  </script>
 </body>
 </html>
